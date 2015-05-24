@@ -1,0 +1,15 @@
+---
+- name: hhvm | php.ini customization
+  copy: src=php.ini dest=/etc/hhvm/php.ini
+  notify:
+    restart HHVM
+
+- name: hhvm | run process under the 'vagrant' user account
+  lineinfile: dest=/etc/init.d/hhvm
+    regexp='^{{ item }}='
+    line='{{ item }}="vagrant"'
+  with_items:
+    - RUN_AS_USER
+    - RUN_AS_GROUP
+  notify:
+    restart HHVM

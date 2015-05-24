@@ -1,0 +1,16 @@
+---
+- name: apache | disable default site
+  command: removes=/etc/apache2/sites-enabled/000-default.conf
+    a2dissite 000-default
+  notify:
+    restart Apache
+
+- name: apache | run process under the 'vagrant' user account
+  lineinfile: dest=/etc/apache2/envvars
+    regexp='export {{ item }}'
+    line='export {{ item }}=vagrant'
+  with_items:
+    - APACHE_RUN_USER
+    - APACHE_RUN_GROUP
+  notify:
+    restart Apache

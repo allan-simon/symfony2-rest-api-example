@@ -1,0 +1,24 @@
+---
+- name: initialize application
+  sudo_user: vagrant
+  # include: init_app_via_composer.yml
+  include: init_app_via_installer.yml
+
+- name: default gitignore
+  copy: src=Symfony.gitignore dest={{ APPDIR }}/.gitignore force=no
+
+- name: add container - Apache VirtualHost
+  template: src=apache2.vhost.j2 dest=/etc/apache2/sites-available/{{ APPNAME }}.conf
+  notify:
+    restart Apache
+
+- name: add FastCGI worker pool
+  template: src=php-fpm-pool.conf.j2 dest=/etc/php5/fpm/pool.d/{{ APPNAME }}.conf
+  notify:
+    restart PHP5-FPM
+
+- name: enable container - Apache VirtualHost
+  command: creates=/etc/apache2/sites-enabled/{{ APPNAME }}.conf
+    a2ensite {{ APPNAME }}
+  notify:
+    restart Apache

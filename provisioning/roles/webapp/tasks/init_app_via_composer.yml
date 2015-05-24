@@ -1,0 +1,5 @@
+---
+- name: initialize application via composer.phar
+  sudo_user: vagrant
+  command: creates={{ APPDIR }}/
+    /vagrant/composer.phar create-project --no-interaction --quiet symfony/framework-standard-edition {{ APPDIR }}

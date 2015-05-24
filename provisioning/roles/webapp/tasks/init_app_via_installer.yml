@@ -1,0 +1,7 @@
+---
+- name: initialize application via symfony.phar
+  sudo_user: vagrant
+  shell: creates={{ APPDIR }}/ chdir=/tmp
+    symfony new --no-interaction --quiet {{ APPNAME }}-install
+    && mv {{ APPNAME }}-install {{ APPDIR }}
+

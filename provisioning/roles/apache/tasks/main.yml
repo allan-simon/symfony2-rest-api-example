@@ -1,0 +1,9 @@
+---
+- name: APT install package
+  apt: name=apache2
+
+- name: enable FastCGI module
+  apache2_module: name=proxy_fcgi
+
+- name: enable Rewrite module
+  apache2_module: name=rewrite

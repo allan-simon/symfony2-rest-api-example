@@ -1,0 +1,6 @@
+---
+- name: restart SSH
+  service: name=ssh state=restarted
+
+- name: enable swapping
+  command: swapon -a

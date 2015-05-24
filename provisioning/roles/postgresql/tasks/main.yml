@@ -1,0 +1,15 @@
+---
+- name: PostgreSQL server and client
+  apt: name=postgresql-9.3,libpq-dev,python-psycopg2
+
+- name: PostgreSQL database user
+  sudo_user: postgres
+  postgresql_user: name={{ DBUSER }} password={{ DBPASSWORD }}
+
+- name: PostgreSQL database init
+  sudo_user: postgres
+  postgresql_db: name={{ DBNAME }} owner={{ DBUSER }}
+
+# - name: PostgreSQL database grants
+#   sudo_user: postgres
+#   postgresql_privs: db=symfony role=vagrant objs=ALL_IN_SCHEMA priv=ALL

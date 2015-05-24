@@ -1,0 +1,24 @@
+---
+- name: (purge HHVM)
+  apt: name=hhvm state=absent
+
+- name: PHP 5.x and extensions
+  apt: name={{ item }}
+  with_items:
+    - php5-cli
+    - php5-curl
+    - php5-fpm
+    - php5-pgsql
+    - php5-xdebug
+    - php5-intl
+  notify:
+    restart Apache
+
+- name: copy php.ini customizations
+  copy: src=php-extra.ini dest=/etc/php5/mods-available/extra.ini
+  notify:
+    - restart PHP5-FPM
+
+- name: enable php.ini customizations
+  command: creates=/etc/php5/fpm/conf.d/90-extra.ini
+    php5enmod extra

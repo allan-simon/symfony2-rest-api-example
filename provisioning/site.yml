@@ -1,0 +1,23 @@
+---
+- hosts: all
+  sudo: yes
+  vars:
+    APPDIR: "/vagrant/{{ APPNAME }}"
+    when: APPNAME is defined
+    APPWEBROOT: "{{ APPDIR }}/web"
+    when: APPNAME is defined
+    APPCOMMONDIR: "/vagrant"
+    APPUSER: "vagrant"
+
+  pre_tasks:
+    - name: check last APT update time
+      apt: update_cache=yes cache_valid_time=86400
+
+  roles:
+    - apache
+    - postgresql
+    # - hhvm
+    - php
+    - symfony
+    - { role: webapp, when: APPNAME is defined }
+    - vagrantbox

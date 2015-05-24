@@ -1,0 +1,18 @@
+- name: create system swapfile
+  shell: creates=/.swapfile
+    umask u=rw,go=
+    && dd if=/dev/zero of=/.swapfile bs=1M count=512
+    && mkswap /.swapfile
+
+- name: add swapfile to fstab
+  lineinfile: dest=/etc/fstab
+    regexp="/.swapfile"
+    line="/.swapfile none swap sw 0 0"
+    state=present
+  notify:
+    enable swapping
+
+- name: set swapiness to minimum
+  sysctl:
+    name: vm.swappiness
+    value: "1"

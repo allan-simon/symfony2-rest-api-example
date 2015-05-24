@@ -1,0 +1,22 @@
+---
+- name: disable SSHd reverse DNS lookup
+  lineinfile: dest=/etc/ssh/sshd_config
+    regexp='^\s*#*\s*UseDNS'
+    line='UseDNS no'
+    insertafter=EOF
+  notify:
+    restart SSH
+
+- name: probe for HHVM init
+  stat: path=/etc/init.d/hhvm
+  register: hhvm
+
+- include: vagrantify_apache.yml
+
+- include: vagrantify_hhvm.yml
+  when: hhvm.stat.exists
+
+- include: vagrantify_php5-fpm.yml
+  when: not hhvm.stat.exists
+
+- include: vm_swapfile.yml
