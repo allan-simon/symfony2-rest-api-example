@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller;
 
+use  AppBundle\Entity\Article;
+
 class ArticlesController
 {
 
@@ -13,9 +15,11 @@ class ArticlesController
      *           generate an output
      *
      * it generates so the route GET .../articles/{id}
+     *
+     * @return Article
      */
     public function getArticleAction($id)
     {
-        return array('hello' => 'world');
+        return new Article("title $id", "body $id");
     }
 }
