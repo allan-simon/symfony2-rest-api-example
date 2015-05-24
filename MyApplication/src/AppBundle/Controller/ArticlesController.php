@@ -19,13 +19,8 @@ class ArticlesController extends FOSRestController
      *
      * @return Article
      */
-    public function getArticleAction($id)
+    public function getArticleAction(Article $article)
     {
-        $article = $this
-            ->getDoctrine()
-            ->getRepository('AppBundle:Article')
-            ->find($id);
-
         return $article;
     }
 }
