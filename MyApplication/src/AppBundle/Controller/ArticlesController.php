@@ -3,8 +3,9 @@
 namespace AppBundle\Controller;
 
 use  AppBundle\Entity\Article;
+use FOS\RestBundle\Controller\FOSRestController;
 
-class ArticlesController
+class ArticlesController extends FOSRestController
 {
 
     /**
@@ -20,6 +21,11 @@ class ArticlesController
      */
     public function getArticleAction($id)
     {
-        return new Article("title $id", "body $id");
+        $article = $this
+            ->getDoctrine()
+            ->getRepository('AppBundle:Article')
+            ->find($id);
+
+        return $article;
     }
 }
