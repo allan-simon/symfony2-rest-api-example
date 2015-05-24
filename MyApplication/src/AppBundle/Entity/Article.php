@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity()
@@ -22,6 +23,8 @@ class Article
      * @var string
      *
      * @ORM\Column(type="string")
+     * @Assert\NotBlank()
+     * @Assert\NotNull()
      */
     protected $title;
 
@@ -29,6 +32,8 @@ class Article
      * @var string
      *
      * @ORM\Column(type="string")
+     * @Assert\NotBlank()
+     * @Assert\NotNull()
      */
     protected $body;
 
@@ -41,11 +46,43 @@ class Article
         $this->body = $body;
     }
 
-    // Note: at the opposite of the bad habits contracted by those coming
-    // from the Java world we don't generate all the setters and getters
-    // brainlessly, otherwise you can simply put the properties as public...
-    // By not creating them we're sure:
-    // that nobody can set the id
-    // that we understand why and how we need to add getter and or setter of
-    // a property
+    /**
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param string $title
+     *
+     * @return Self
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBody()
+    {
+        return $this->body;
+    }
+
+    /**
+     * @param string $body
+     *
+     * @return Self
+     */
+    public function setBody($body)
+    {
+        $this->body = $body;
+
+        return $this;
+    }
 }
