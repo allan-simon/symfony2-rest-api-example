@@ -1,0 +1,4 @@
+blog_api_articles:
+    type: rest
+    resource: "@AppBundle/Controller/ArticlesController.php"
+    name_prefix:  api_articles_

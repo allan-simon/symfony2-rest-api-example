@@ -1,3 +1,4 @@
-app:
-    resource: "@AppBundle/Controller/"
-    type:     annotation
+blog_api:
+    type:     rest
+    prefix:   /api
+    resource: "@AppBundle/Resources/config/api-routing.yml"
