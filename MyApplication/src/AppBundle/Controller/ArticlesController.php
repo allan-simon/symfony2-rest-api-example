@@ -57,6 +57,56 @@ class ArticlesController extends FOSRestController
         // an article without body or title, to use it as
         // a placeholder for the form
         $article = new Article();
+        $errors = $this->treatAndValidateRequest($article, $request);
+        if (count($errors) > 0) {
+            return new View(
+                $errors,
+                Response::HTTP_UNPROCESSABLE_ENTITY
+            );
+        }
+
+        $this->persistAndFlush($article);
+        // created => 201, we need View here because we're not
+        // returning the default 200
+        return new View($article, Response::HTTP_CREATED);
+    }
+
+
+    /**
+     *
+     */
+    public function putArticleAction(Article $article, Request $request)
+    {
+
+        // yes we replace totally the old article by a new one
+        // except the id, because that's how PUT works
+        // if you just want to "merge" you want to use PATCH, not PUT
+        $id = $article->getId();
+        $article = new Article();
+        $article->setId($id);
+
+        $errors = $this->treatAndValidateRequest($article, $request);
+        if (count($errors) > 0) {
+            return new View(
+                $errors,
+                Response::HTTP_UNPROCESSABLE_ENTITY
+            );
+        }
+
+        $this->persistAndFlush($article);
+
+        return "";
+    }
+
+    /**
+     * fill $article with the json send in request and validates it
+     *
+     * returns an array of errors (empty if everything is ok)
+     *
+     * @return array
+     */
+    private function treatAndValidateRequest(Article $article, Request $request)
+    {
         // createForm is provided by the parent class
         $form = $this->createForm(
             new ArticleType(),
@@ -70,18 +120,13 @@ class ArticlesController extends FOSRestController
         // because the json generated
         // is much readable than the one by serializing $form->getErrors()
         $errors = $this->get('validator')->validate($article);
-        if (count($errors) > 0) {
-            return new View(
-                $errors,
-                Response::HTTP_UNPROCESSABLE_ENTITY
-            );
-        }
+        return $errors;
+    }
 
+    private function persistAndFlush(Article $article)
+    {
         $manager = $this->getDoctrine()->getManager();
         $manager->persist($article);
         $manager->flush();
-
-        // created => 201
-        return new View($article, Response::HTTP_CREATED);
     }
 }

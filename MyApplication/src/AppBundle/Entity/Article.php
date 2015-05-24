@@ -85,4 +85,19 @@ class Article
 
         return $this;
     }
+
+    /**
+     * TODO: we should use a factory-like method instead of letting in the wild
+     * a method that can change the id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
 }
