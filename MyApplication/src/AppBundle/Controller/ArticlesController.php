@@ -23,4 +23,20 @@ class ArticlesController extends FOSRestController
     {
         return $article;
     }
+
+    /**
+     * retrieve all articles
+     * TODO: add pagination
+     *
+     * @return Article[]
+     */
+    public function getArticlesAction()
+    {
+        $articles = $this
+            ->getDoctrine()
+            ->getRepository('AppBundle:Article')
+            ->findAll();
+
+        return $articles;
+    }
 }
