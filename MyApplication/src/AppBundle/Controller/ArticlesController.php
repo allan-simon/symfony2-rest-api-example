@@ -110,7 +110,10 @@ class ArticlesController extends FOSRestController
         // createForm is provided by the parent class
         $form = $this->createForm(
             new ArticleType(),
-            $article
+            $article,
+            array(
+                'method' => $request->getMethod()
+            )
         );
         // this method is the one that will use the value in the POST
         // to update $article
